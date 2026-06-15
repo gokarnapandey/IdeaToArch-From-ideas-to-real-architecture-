@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: Web-Search
+  threads:
+    virtual:
+      enabled: true          # Java 21 virtual threads: simple blocking code + parallel agent fan-out
+  ai:
+    ollama:
+      # Self-hosted GPU server. Override any value with the matching env var.
+      base-url: ${OLLAMA_BASE_URL:http://98.70.106.75:11435}
+      chat:
+        options:
+          model: ${OLLAMA_CHAT_MODEL:qwen2.5:14b-instruct-q4_K_M}
+          num-ctx: ${OLLAMA_NUM_CTX:16384}
+          keep-alive: ${OLLAMA_KEEP_ALIVE:30m}
+      # Phase 2 — RAG embeddings (model pulled lazily on first use):
+      embedding:
+        options:
+          model: ${OLLAMA_EMBED_MODEL:nomic-embed-text}
+      # Don't auto-pull models at startup; pull them on the GPU host yourself.
+      init:
+        pull-model-strategy: never
+    # Spring AI's own request retry — keep small (the client read timeout is the real guard).
+    retry:
+      max-attempts: 2
+
+#   Phase 3 — multi-model routing will also use:
+#     OLLAMA_ROUTER_MODEL=qwen2.5:7b-instruct-q4_K_M   (cheap planner/router)
+#     OLLAMA_JSON_MODEL=qwen2.5:14b-instruct-q4_K_M    (structured-output agents)
+
+tavily:
+  api:
+    # Uses TAVILY_API_KEY when set; otherwise falls back to the embedded dev key.
+    key: ${TAVILY_API_KEY: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}
+
+server:
+  port: 9192
