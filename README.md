@@ -184,8 +184,6 @@ npm run dev
 
 <h2>📄 License</h2>
 
-<p>Released under the MIT License. See <a href="LICENSE"><code>LICENSE</code></a> for details.</p>
-
 <div align="center">
   <sub>Built with Spring AI &amp; Claude · From ideas to real architecture.</sub>
 </div>
