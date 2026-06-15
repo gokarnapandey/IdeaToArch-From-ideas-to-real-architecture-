@@ -53,6 +53,9 @@ public class DesignService {
         if (type == AgentType.PROMPT_GENERATION && session.getPrompts() != null) {
             session.setStatus(DesignSession.Status.COMPLETED);
         }
+
+        // Flush the updated artifacts/status to disk so the session can be reloaded after a restart.
+        store.put(session);
         return session;
     }
 }

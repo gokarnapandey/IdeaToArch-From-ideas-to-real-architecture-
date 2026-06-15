@@ -1,5 +1,8 @@
 package com.webSearch.session;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.webSearch.agent.dto.Architecture;
 import com.webSearch.agent.dto.ClaudePrompts;
 import com.webSearch.agent.dto.DatabaseDesign;
@@ -24,6 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DesignSession {
 
     public enum Status { PENDING, RUNNING, COMPLETED, FAILED }
@@ -52,9 +56,17 @@ public class DesignSession {
     private volatile ClaudePrompts prompts;
 
     public DesignSession(String id, String idea) {
+        this(id, idea, Instant.now());
+    }
+
+    /** Used by Jackson to rehydrate a persisted session (preserves the original {@code createdAt}). */
+    @JsonCreator
+    public DesignSession(@JsonProperty("id") String id,
+                         @JsonProperty("idea") String idea,
+                         @JsonProperty("createdAt") Instant createdAt) {
         this.id = id;
         this.idea = idea;
-        this.createdAt = Instant.now();
+        this.createdAt = createdAt;
     }
 
     public void addAgentError(String message) {

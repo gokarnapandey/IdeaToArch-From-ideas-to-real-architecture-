@@ -35,3 +35,8 @@ tavily:
 
 server:
   port: 9192
+
+# Where design sessions are persisted as JSON so they survive a restart (one file per session).
+app:
+  sessions:
+    dir: ${SESSIONS_DIR:data/sessions}
