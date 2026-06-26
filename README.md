@@ -185,5 +185,5 @@ npm run dev
 <h2>📄 License</h2>
 
 <div align="center">
-  <sub>Built with Spring AI &amp; Claude · From ideas to real architecture.</sub>
+  <sub>Built with Spring AI· From ideas to real architecture.</sub>
 </div>
